@@ -7,4 +7,5 @@ indicated location in the file, place the file in a directory
 accessible by your web server, and you're done.
 
 I wrote this as a replacement for the Google Latitude Public Location
-Badge.  There's also a short blogpost about it.
+Badge.  There's also a [blog
+post](http://drmirror.net/2013/09/04/my-current-position/) about it.x
