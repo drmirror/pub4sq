@@ -6,7 +6,7 @@
 
 # put your foursquare RSS feed address between the quotes below
 # (get it from http://foursquare.com/feeds)
-$url = "";   
+$url = "https://feeds.foursquare.com/history/50XP201QG1GPXQJANTUCSZADKMJQRV5V.rss";   
 $count = 7;  # number of checkins to show 
 
 date_default_timezone_set("UTC");
@@ -38,16 +38,11 @@ function time2str($ts)   # this one thanks to somebody on stackoverflow
     }
 }
 
-$contents = file_get_contents($url . ";count=" . $count);
+$contents = file_get_contents($url . "?count=" . $count);
 
 $p = xml_parser_create();
 xml_parse_into_struct($p, $contents, $values, $tags);
 xml_parser_free($p);
-
-//echo "Tags array\n";
-//print_r($tags);
-//echo "Values array\n";
-//print_r($values);
 
 $i = 0;
 
@@ -89,7 +84,8 @@ foreach ($values as $key=>$value) {
 	list-style-type: none;
 	background-color: #f0f0f0;
       }
-      #checkin-list li:hover        { background-color: #e0e0e0; }
+      #checkin-list li:hover        { background-color: #e0e0e0;
+                                      cursor: pointer; }
       #checkin-list .selected:hover { background-color: #c0c0c0; } 
       #checkin-list .selected       { background-color: #c0c0c0; }     
       .place {
