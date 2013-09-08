@@ -4,10 +4,11 @@
 # Author:      Andre Spiegel <spiegel@drmirror.net>
 # Description: Displays a map with your last few Foursquare checkins.
 
-# put your foursquare RSS feed address between the quotes below
-# (get it from http://foursquare.com/feeds)
-$url = "https://feeds.foursquare.com/history/50XP201QG1GPXQJANTUCSZADKMJQRV5V.rss";   
-$count = 7;  # number of checkins to show 
+# Below is my Foursquare RSS feed URL.  Get your own from
+# http://foursquare.com/feeds and put between the quotes. 
+
+$url = "https://feeds.foursquare.com/history/50XP201QG1GPXQJANTUCSZADKMJQRV5V.rss";
+$count = 7; # number of checkins to show
 
 date_default_timezone_set("UTC");
 
