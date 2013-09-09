@@ -76,9 +76,10 @@ foreach ($values as $key=>$value) {
       }
       #checkin-list {
         float: left;
-	width: 20%;
+	width: 15%;
 	margin-right: 2%;
       }
+      ul { margin: 0; padding: 0; }
       #checkin-list li {
         margin-bottom: .2em;
 	padding: .2em;
