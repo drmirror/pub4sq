@@ -126,7 +126,7 @@ function initialize() {
       position: myLatlng,
       icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
       map: map,
-      title: "<?= $checkins[0]["name"] ?>",
+      title: "<?= str_replace('"', '\\"', $checkins[0]["name"]) ?>",
       zIndex: 1
   });
 
@@ -135,7 +135,7 @@ function initialize() {
       position: new google.maps.LatLng(<?=str_replace(" ", ",", $checkins[$i]["coord"])?>),
       icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
       map: map,
-      title: "<?= $checkins[$i]["name"] ?>",
+      title: "<?= str_replace('"', '\\"', $checkins[$i]["name"]) ?>",
       zIndex: 0
     });
   <?php } ?>
