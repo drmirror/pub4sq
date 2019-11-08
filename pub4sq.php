@@ -117,7 +117,7 @@ foreach ($items as $key=>$item) {
 
 </script>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB_V7WgH6Cg5csGUaCU5ufn2tL4qqT3m8w&v=3.exp&sensor=false"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=ENTER_YOUR_GOOGLE_MAPS_API_KEY_HERE&v=3.exp&sensor=false"></script>
     <script>
 google.maps.visualRefresh = true;
 var marker = [];
