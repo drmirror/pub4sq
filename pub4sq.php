@@ -7,7 +7,7 @@
 # Below is my Foursquare RSS feed URL.  Get your own from
 # http://foursquare.com/feeds and put between the quotes. 
 
-$url = "https://feeds.foursquare.com/history/50XP201QG1GPXQJANTUCSZADKMJQRV5V.rss";
+$url = "https://api.foursquare.com/v2/users/self/checkins?oauth_token=ENTER_YOUR_TOKEN_HERE&v=20190101";
 $count = 7; # number of checkins to show
 
 date_default_timezone_set("UTC");
@@ -39,28 +39,21 @@ function time2str($ts)   # this one thanks to somebody on stackoverflow
     }
 }
 
-$contents = file_get_contents($url . "?count=" . $count);
+$data = file_get_contents($url . "&limit=" . $count);
+$contents = json_decode($data);
+$items = $contents->{'response'}->{'checkins'}->{'items'};
 
-$p = xml_parser_create();
-xml_parse_into_struct($p, $contents, $values, $tags);
-xml_parser_free($p);
+foreach ($items as $key=>$item) {
 
-$i = 0;
-
-foreach ($values as $key=>$value) {
-
-  if ($value["tag"] == "TITLE"
-      && substr($value["value"],0,26) != "foursquare checkin history")
-    $checkins[$i]["name"] = $value["value"];
-  if ($value["tag"] == "PUBDATE")
-    $checkins[$i]["time"] = strtotime($value["value"]);
-  if ($value["tag"] == "LINK")
-    $checkins[$i]["link"] = $value["value"];
-  if ($value["tag"] == "GEORSS:POINT") {
-    $checkins[$i]["coord"] = $value["value"];
-    $i++;
+  $name = $item->{'venue'}->{'name'};
+  $checkins[$key]["name"] = $name;
+  $checkins[$key]["time"] = $item->{'createdAt'};
+  if ($name == "One Sixty") {
+    $checkins[$key]["coord"] = "40.7776,-73.9815";
+  } else {
+    $checkins[$key]["coord"] = $item->{'venue'}->{'location'}->{'lat'} . ',' . $item->{'venue'}->{'location'}->{'lng'};
   }
-
+  
 }
 
 ?>
@@ -109,14 +102,29 @@ foreach ($values as $key=>$value) {
 	height: 80%;
       }
     </style>
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-40543116-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB_V7WgH6Cg5csGUaCU5ufn2tL4qqT3m8w&v=3.exp&sensor=false"></script>
     <script>
 google.maps.visualRefresh = true;
 var marker = [];
 var map = null;
 
 function initialize() {
-  var myLatlng = new google.maps.LatLng(<?=str_replace(" ", ",", $checkins[0]["coord"])?>);
+  var myLatlng = new google.maps.LatLng(<?= $checkins[0]["coord"] ?>);
   var mapOptions = {
     mapTypeId: google.maps.MapTypeId.ROADMAP
   }
@@ -132,7 +140,7 @@ function initialize() {
 
   <?php for ($i=1; $i<sizeof($checkins); $i++) {?>
     marker[<?= $i ?>] = new google.maps.Marker({
-      position: new google.maps.LatLng(<?=str_replace(" ", ",", $checkins[$i]["coord"])?>),
+      position: new google.maps.LatLng(<?= $checkins[$i]["coord"] ?>),
       icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
       map: map,
       title: "<?= str_replace('"', '\\"', $checkins[$i]["name"]) ?>",
